@@ -4,6 +4,8 @@
 <h1>{{{ $titulo }}}</h1>
 <hr>
 
+@include('templates.crudmenu', array('search' => 'publicacoes', 'buttons' => array(array('url' => 'publicacoes/criar', 'icon' => 'glyphicon-plus', 'label' => 'Criar Publicação'))))
+
 <table class="table table-striped table-bordered">
     <thead>
         <tr>
