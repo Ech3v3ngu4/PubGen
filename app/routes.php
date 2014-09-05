@@ -14,3 +14,6 @@
 Route::get('/', 'PublicacaoController@getIndex');
 
 Route::controller('publicacoes', 'PublicacaoController');
+
+// Funções AJAX
+Route::controller('ajax', 'AjaxController');

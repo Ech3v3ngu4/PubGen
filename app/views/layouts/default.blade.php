@@ -15,7 +15,14 @@
         <link rel="stylesheet" href="{{ url('assets/css/bootstrap-responsive.min.css') }}">
     </head>
     <body>
+         <script type="text/javascript"> 
+            var QT = { 
+              url: '{{ url() }}'
+            }; 
+        </script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
         <script src="{{ url('assets/js/bootstrap.min.js?ver=1.00') }}"></script>
+        <script src="{{ url('assets/js/scripts.js') }}"></script>
         <div class="container">
             @yield('content')
         </div>
