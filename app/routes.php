@@ -17,3 +17,6 @@ Route::controller('publicacoes', 'PublicacaoController');
 
 // Funções AJAX
 Route::controller('ajax', 'AjaxController');
+
+//Sign
+Route::controller('sign', 'SignController');

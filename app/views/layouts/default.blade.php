@@ -15,6 +15,7 @@
         <link rel="stylesheet" href="{{ url('assets/css/bootstrap-responsive.min.css') }}">
     </head>
     <body>
+        @include('templates.menu')
          <script type="text/javascript"> 
             var QT = { 
               url: '{{ url() }}'

@@ -16,7 +16,7 @@ class Publicacao extends Eloquent {
     public function validate($input) 
     {
         $rules = array(
-            'nome' => 'required|max:100',
+            'titulo' => 'required|max:100',
         );
         
         return Validator::make($input, $rules);

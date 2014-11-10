@@ -9,16 +9,20 @@
 <table class="table table-striped table-bordered">
     <thead>
         <tr>
-            <th>ID</th>
-            <th>Nome</th>
+            <th>Título</th>
+            <th>Autores</th>
+            <th>Veículo de Publicação</th>
+            <th>Ano</th>
             <th width="25%">Ações</th>
         </tr>
     </thead>
     <tbody>
         @foreach($publicacoes as $publicacao)
         <tr>
-            <td>{{  $publicacao->id }}</td>
-            <td>{{{ $publicacao->nome }}}</td>
+            <td>{{  $publicacao->titulo }}</td>
+            <td>{{{ $publicacao->autores }}}</td>
+            <td>{{{ $publicacao->editora }}}</td>
+            <td>{{{ $publicacao->ano_publicacao }}}</td>
             <td>
                 <div class="btn-group">
                     <a class="btn btn-xs btn-info" href="{{ url('publicacoes/editar',$publicacao->id) }}">

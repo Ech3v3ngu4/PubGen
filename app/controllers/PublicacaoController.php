@@ -32,16 +32,38 @@ class PublicacaoController extends BaseController{
     
     public function postCriar()
     {
+        $input = Input::all();
          // New element
         $publicacao = new Publicacao;
-            
+        
         // Validation
         $validator = $publicacao->validate(Input::all());
-
+        
         if ($validator->passes())
         {
-            $publicacao->nome = Input::get('nome');
+            $publicacao->titulo = Input::get('nome');
+            $publicacao->autores = Input::get('nome');
+            $publicacao->tipo = Input::get('nome');
+            $publicacao->alcance = Input::get('nome');
+            $publicacao->natureza = Input::get('nome');
+            $publicacao->autores = Input::get('nome');
+            $publicacao->editores = Input::get('nome');
             
+            // Converte telefone e tipo para json
+            if(isset($input['autor_idx']))
+            {
+                foreach ($input['autor_idx'] as $key => $value) {
+                    $autores[$key] = $input['autor'.$value];
+                }
+                $publicacao->editores = json_encode($autores);
+            }
+
+            $publicacao->titulo_periodico = Input::get('nome');
+            $publicacao->editora = Input::get('nome');
+            $publicacao->local_publicacao = Input::get('nome');
+            $publicacao->num_paginas = Input::get('nome');
+            $publicacao->ano_publicacao = Input::get('nome');
+    
             $publicacao->save();
             
             return Redirect::to('/');
