@@ -4,21 +4,41 @@ class PublicacaoController extends BaseController{
     
     public function getIndex()
     {
-        $titulo = 'Publicações';
-        
-        $pesquisa = Input::get('pesquisa');
-        
-        if($pesquisa)
+        if(!Auth::check())
         {
-            $publicacoes = Publicacao::search($pesquisa)->
-                    paginate(Config::get('additional.pagination_count', 10));
+            $titulo = 'Publicações';
+            
+            $pesquisa = Input::get('pesquisa');
+
+            if($pesquisa)
+            {
+                $publicacoes = Publicacao::search($pesquisa)->
+                        paginate(Config::get('additional.pagination_count', 10));
+            }
+            else
+            {
+                $publicacoes = Publicacao::paginate(Config::get('additional.pagination_count', 10));
+            }
+
+            return View::make('visitantes/lista', compact('titulo', 'publicacoes', 'pesquisa'));
         }
         else
         {
-            $publicacoes = Publicacao::paginate(Config::get('additional.pagination_count', 10));
+            $titulo = 'Minhas Publicações';
+            
+            $pesquisa = Input::get('pesquisa');
+
+            if($pesquisa)
+            {
+                $publicacoes = Publicacao::search($pesquisa)->
+                        paginate(Config::get('additional.pagination_count', 10));
+            }
+            else
+            {
+                $publicacoes = Publicacao::paginate(Config::get('additional.pagination_count', 10));
+            }
+            return View::make('publicacoes/lista', compact('titulo', 'publicacoes', 'pesquisa'));
         }
-        
-        return View::make('publicacoes/lista', compact('titulo', 'publicacoes', 'pesquisa'));
     }
          
     public function getCriar()
@@ -41,28 +61,26 @@ class PublicacaoController extends BaseController{
         
         if ($validator->passes())
         {
-            $publicacao->titulo = Input::get('nome');
-            $publicacao->autores = Input::get('nome');
-            $publicacao->tipo = Input::get('nome');
-            $publicacao->alcance = Input::get('nome');
-            $publicacao->natureza = Input::get('nome');
-            $publicacao->autores = Input::get('nome');
-            $publicacao->editores = Input::get('nome');
-            
-            // Converte telefone e tipo para json
+            $publicacao->titulo = Input::get('titulo');
+            $publicacao->tipo = Input::get('tipo');
+            $publicacao->alcance = Input::get('alcance');
+            $publicacao->natureza = Input::get('natureza');
+            $publicacao->editores = Input::get('editores');
+
+            // Converte autores json
             if(isset($input['autor_idx']))
             {
                 foreach ($input['autor_idx'] as $key => $value) {
                     $autores[$key] = $input['autor'.$value];
                 }
-                $publicacao->editores = json_encode($autores);
+                $publicacao->autores = json_encode($autores);
             }
 
-            $publicacao->titulo_periodico = Input::get('nome');
-            $publicacao->editora = Input::get('nome');
-            $publicacao->local_publicacao = Input::get('nome');
-            $publicacao->num_paginas = Input::get('nome');
-            $publicacao->ano_publicacao = Input::get('nome');
+            $publicacao->titulo_periodico = Input::get('titulo_periodico');
+            $publicacao->editora = Input::get('editora');
+            $publicacao->local_publicacao = Input::get('local_publicacao');
+            $publicacao->num_paginas = Input::get('num_paginas');
+            $publicacao->ano_publicacao = Input::get('ano');
     
             $publicacao->save();
             
@@ -93,8 +111,27 @@ class PublicacaoController extends BaseController{
 
         if ($validator->passes())
         {
-            $publicacao->nome = Input::get('nome');
-            
+            $publicacao->titulo = Input::get('titulo');
+            $publicacao->tipo = Input::get('tipo');
+            $publicacao->alcance = Input::get('alcance');
+            $publicacao->natureza = Input::get('natureza');
+            $publicacao->editores = Input::get('editores');
+
+            // Converte autores json
+            if(isset($input['autor_idx']))
+            {
+                foreach ($input['autor_idx'] as $key => $value) {
+                    $autores[$key] = $input['autor'.$value];
+                }
+                $publicacao->autores = json_encode($autores);
+            }
+
+            $publicacao->titulo_periodico = Input::get('titulo_periodico');
+            $publicacao->editora = Input::get('editora');
+            $publicacao->local_publicacao = Input::get('local_publicacao');
+            $publicacao->num_paginas = Input::get('num_paginas');
+            $publicacao->ano_publicacao = Input::get('ano');
+    
             $publicacao->save();
             
             return Redirect::to('/');
@@ -121,5 +158,33 @@ class PublicacaoController extends BaseController{
         $publicacao->delete();
         
         return Redirect::to('/');
+    }
+    
+    public function getVisualizar($id)
+    {
+        $titulo = 'Visualizar Publicação';
+        
+        $publicacao = Publicacao::find($id);
+        
+        return View::make('publicacoes/visualizar', compact('titulo', 'publicacao'));
+    }
+    
+    public function getLista()
+    {
+            $titulo = 'Publicações';
+
+            $pesquisa = Input::get('pesquisa');
+
+            if($pesquisa)
+            {
+                $publicacoes = Publicacao::search($pesquisa)->
+                        paginate(Config::get('additional.pagination_count', 10));
+            }
+            else
+            {
+                $publicacoes = Publicacao::paginate(Config::get('additional.pagination_count', 10));
+            }
+
+            return View::make('visitantes/lista', compact('titulo', 'publicacoes', 'pesquisa'));
     }
 }

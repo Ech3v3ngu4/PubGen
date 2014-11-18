@@ -79,9 +79,9 @@
         </div>
     </div>
     <div class="form-group">
-        <label for="Editora" class="col-lg-2 control-label">Editora</label>
+        <label for="editora" class="col-lg-2 control-label">Editora</label>
         <div class="col-lg-4">
-            {{ Form::text('Editora', '', array('class' => 'form-control', 'placeholder' => 'Nome da Editora')) }}
+            {{ Form::text('editora', '', array('class' => 'form-control', 'placeholder' => 'Nome da Editora')) }}
         </div>
     </div>
     <div class="form-group">

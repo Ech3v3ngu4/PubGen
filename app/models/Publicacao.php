@@ -32,6 +32,6 @@ class Publicacao extends Eloquent {
             return $query->where('id', $term);
         }
  
-        return $query->where('publicacoes.nome', 'like', '%'.$term.'%');    
+        return $query->where('publicacoes.titulo', 'like', '%'.$term.'%');    
     }    
 }
