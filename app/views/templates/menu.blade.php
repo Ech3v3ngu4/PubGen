@@ -9,16 +9,32 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">PubGen</a>
+      <a class="navbar-brand" href="{{ url('publicacoes/lista') }}">PubGen</a>
     </div>
-
+    <ul class="nav navbar-nav">
+        <li><a href="{{ url('publicacoes/lista') }}">Lista de Publicações</a></li>
+    </ul>
+    @if(Auth::check())
+    <ul class="nav navbar-nav">
+        <li><a href="{{ url('publicacoes') }}">Minhas Publicações</a></li>
+    </ul>
+    @endif
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home</a></li>
-        <li><a href="#">Link</a></li>
-        <li><a href="#">Link</a></li>
+      <ul class="nav navbar-nav navbar-right">
+        @if(!Auth::check())
+            <li>
+                <a href="{{ url('sign/in') }}">Entrar</a>
+            </li>
+        @else
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Bem vindo {{ Auth::user()->nome }}<span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="{{ url('sign/out') }}">Sair</a></li>
+            </ul>
+        </li>
+        @endif
       </ul>
-    </div><!-- /.navbar-collapse -->
+    </div>
   </div>
 </nav>
 </div>

@@ -21,9 +21,9 @@ public function up()
 
                 $table->string('username');
                 $table->string('nome_publicacao');
-                $table->text('instituição');
-                $table->string('área');
-                $table->text('linha de pesquisa');
+                $table->text('instituicao');
+                $table->string('area');
+                $table->text('linha_pesquisa');
             });  
 	}
 
@@ -40,9 +40,9 @@ public function up()
 
                 $table->dropColumn('username');
                 $table->dropColumn('nome_publicacao');
-                $table->dropColumn('instituição');
-                $table->dropColumn('área');
-                $table->dropColumn('linha de pesquisa');
+                $table->dropColumn('instituicao');
+                $table->dropColumn('area');
+                $table->dropColumn('linha_pesquisa');
             });
 	}
 

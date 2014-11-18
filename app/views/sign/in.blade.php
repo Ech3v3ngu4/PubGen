@@ -27,14 +27,11 @@
             </label>
             
             @if(isset($redirect) && $redirect)
-            {{-- Redirecionamento após o login --}}
-            {{ Form::hidden('redirect', $redirect) }}
+                {{-- Redirecionamento após o login --}}
+                {{ Form::hidden('redirect', $redirect) }}
             @endif
             
             {{ Form::submit('Login', array('class' => 'btn btn-lg btn-primary btn-block')) }}
-            <a href="{{ url('sign/recuperar') }}" title="Esqueceu sua senha?"
-               class="btn btn-link">Esqueceu sua senha?</a>
-               
             <a href="{{ url('sign/criar') }}" title="Criar Conta"
                class="btn btn-link">Criar Conta</a>
                

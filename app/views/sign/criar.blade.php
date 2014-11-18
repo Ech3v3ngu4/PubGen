@@ -16,6 +16,36 @@
         </div>
     </div>
     <div class="form-group">
+        <label for="email" class="col-lg-2 control-label">Nome em Publicações</label>
+        <div class="col-lg-6">    
+            {{ Form::text('nome_publicacao', '', array('class' => 'form-control', 'placeholder' => 'Nome em Publicações')) }}
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="instituicao" class="col-lg-2 control-label">Instituição</label>
+        <div class="col-lg-6">    
+            {{ Form::text('instituicao', '', array('class' => 'form-control', 'placeholder' => 'Instituição')) }}
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="area" class="col-lg-2 control-label">Área</label>
+        <div class="col-lg-6">    
+            {{ Form::text('area', '', array('class' => 'form-control', 'placeholder' => 'Área')) }}
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="linha_pesquisa" class="col-lg-2 control-label">Linha de Pesquisa</label>
+        <div class="col-lg-6">    
+            {{ Form::text('linha_pesquisa', '', array('class' => 'form-control', 'placeholder' => 'Linha de Pesquisa')) }}
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="username" class="col-lg-2 control-label">Nome de Usuário</label>
+        <div class="col-lg-6">    
+            {{ Form::text('username', '', array('class' => 'form-control', 'placeholder' => 'Nome de Usuário')) }}
+        </div>
+    </div>
+    <div class="form-group">
         <label for="email" class="col-lg-2 control-label">Endereço de Email</label>
         <div class="col-lg-6">    
             {{ Form::email('email', '', array('class' => 'form-control', 'placeholder' => 'Email')) }}
