@@ -11,8 +11,8 @@
         <label for="nome" class="col-lg-2 control-label">Nome</label>
         <div class="col-lg-4">
             {{ Form::text('titulo', '', array('class' => 'form-control', 'placeholder' => 'Titulo da Publicação')) }}
-                    @include('templates.fielderror', array('field' => 'titulo'))
         </div>
+        @include('templates.fielderror', array('field' => 'titulo'))
     </div>
     
     <div class="form-group publicacao-autor">
@@ -38,7 +38,7 @@
     <div class="form-group {{ ($errors->has('tipo')?'has-error':'') }}">
         <label for="tipo" class="col-lg-2 control-label">Tipo da Publicação</label>
         <div class="col-lg-4">
-            {{ Form::text('tipo', '', array('class' => 'form-control', 'placeholder' => 'Tipo da Publicação')) }}
+            {{ Form::select('tipo', $tipos, '',array('class' => 'form-control')) }}
         </div>
         @include('templates.fielderror', array('field' => 'tipo'))
     </div>
@@ -125,7 +125,7 @@
     </div>
     <div class="form-group {{ ($errors->has('pdf')?'has-error':'') }}">
         <label for="pdf" class="col-lg-2 control-label">Upload de Publicação</label>
-        <div class="col-lg-4">
+        <div class="col-lg-4 alert alert-info">
             {{ Form::file('pdf','',array('class'=>'form-control')) }}
         </div>
         @include('templates.fielderror', array('field' => 'pdf'))

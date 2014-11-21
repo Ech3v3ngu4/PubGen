@@ -9,10 +9,19 @@
 <table class="table table-striped table-bordered">
     <thead>
         <tr>
-            <th>Título</th>
+            <th>Título
+                <a class="glyphicon glyphicon-arrow-down" href="{{url('publicacoes?ordem=asc&campo=titulo')}}"></a> 
+                <a class="glyphicon glyphicon-arrow-up" href="{{url('publicacoes?ordem=desc&campo=titulo')}}"></a>
+            </th>
             <th>Autores</th>
-            <th>Veículo de Publicação</th>
-            <th>Ano</th>
+            <th>Veículo de Publicação
+                <a class="glyphicon glyphicon-arrow-down" href="{{url('publicacoes?ordem=asc&campo=editora')}}"></a> 
+                <a class="glyphicon glyphicon-arrow-up" href="{{url('publicacoes?ordem=desc&campo=editora')}}"></a>
+            </th>
+            <th>Ano
+                <a class="glyphicon glyphicon-arrow-down" href="{{url('publicacoes?ordem=asc&campo=ano_publicacao')}}"></a> 
+                <a class="glyphicon glyphicon-arrow-up" href="{{url('publicacoes?ordem=desc&campo=ano_publicacao')}}"></a>
+            </th>
             <th width="25%">Ações</th>
         </tr>
     </thead>
@@ -22,7 +31,7 @@
             <td>{{  $publicacao->titulo }}</td>
             <td>
                 @foreach($publicacao->autores as $autor)
-                    {{ $autor->nome }}&nbsp
+                    {{ $autor->nome }},&nbsp
                 @endforeach
             </td>
             <td>{{{ $publicacao->editora }}}</td>

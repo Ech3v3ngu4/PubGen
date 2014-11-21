@@ -4,6 +4,8 @@ class PublicacaoController extends BaseController{
     
     public function getIndex()
     {
+        $input = Input::all();
+        
         if(!Auth::check())
         {
             $titulo = 'Publicações';
@@ -12,12 +14,27 @@ class PublicacaoController extends BaseController{
 
             if($pesquisa)
             {
-                $publicacoes = Publicacao::search($pesquisa)->
-                        paginate(Config::get('additional.pagination_count', 10));
+                if(isset($input['ordem']))
+                {
+                    $publicacoes = Publicacao::search($pesquisa)->orderBy($input['campo'],$input['ordem'])->
+                            paginate(Config::get('additional.pagination_count', 10));
+                }
+                else
+                {
+                    $publicacoes = Publicacao::search($pesquisa)->
+                            paginate(Config::get('additional.pagination_count', 10));
+                }
             }
             else
             {
-                $publicacoes = Publicacao::paginate(Config::get('additional.pagination_count', 10));
+                if(isset($input['ordem']))
+                {
+                    $publicacoes = Publicacao::orderBy($input['campo'],$input['ordem'])->paginate(Config::get('additional.pagination_count', 10));
+                }
+                else
+                {
+                    $publicacoes = Publicacao::paginate(Config::get('additional.pagination_count', 10));
+                }
             }
             
             return View::make('visitantes/lista', compact('titulo', 'publicacoes', 'pesquisa'));
@@ -27,15 +44,31 @@ class PublicacaoController extends BaseController{
             $titulo = 'Minhas Publicações';
             
             $pesquisa = Input::get('pesquisa');
-
+            
             if($pesquisa)
             {
-                $publicacoes = Publicacao::search($pesquisa)->
-                        paginate(Config::get('additional.pagination_count', 10));
+                if(isset($input['ordem']))
+                {
+                    $publicacoes = Publicacao::searchUser($pesquisa)->
+                            paginate(Config::get('additional.pagination_count', 10))->orderBy($input['campo'],$input['ordem']);
+                }
+                else
+                {
+                    $publicacoes = Publicacao::searchUser($pesquisa)->
+                            paginate(Config::get('additional.pagination_count', 10));
+                }
             }
             else
             {
-                $publicacoes = Publicacao::paginate(Config::get('additional.pagination_count', 10));
+                if(!isset($input['ordem']))
+                {
+                    $publicacoes = Publicacao::where('usuario_id',Auth::user()->id)->paginate(Config::get('additional.pagination_count', 10));
+                }
+                else
+                {
+                    $publicacoes = Publicacao::where('usuario_id',Auth::user()->id)->orderBy($input['campo'],$input['ordem'])->paginate(Config::get('additional.pagination_count', 10));
+                }
+                    
             }
             
             return View::make('publicacoes/lista', compact('titulo', 'publicacoes', 'pesquisa'));
@@ -47,8 +80,8 @@ class PublicacaoController extends BaseController{
         $titulo = 'Criar Publicação';
         
         $publicacao = new Publicacao;
-                
-        return View::make('publicacoes/criar', compact('titulo', 'publicacao'));
+        $tipos = Tipo::all()->lists('nome', 'id');
+        return View::make('publicacoes/criar', compact('titulo', 'publicacao', 'tipos'));
     }
     
     public function postCriar()
@@ -63,7 +96,7 @@ class PublicacaoController extends BaseController{
         if ($validator->passes())
         {
             $publicacao->titulo = Input::get('titulo');
-            $publicacao->tipo = Input::get('tipo');
+            $publicacao->tipo_id = Input::get('tipo');
             $publicacao->alcance = Input::get('alcance');
             $publicacao->natureza = Input::get('natureza');
             $publicacao->titulo_periodico = Input::get('titulo_periodico');
@@ -129,43 +162,28 @@ class PublicacaoController extends BaseController{
         
         $editores = $publicacao->editores()->get()->toArray();
         
-        return View::make('publicacoes/editar', compact('titulo', 'publicacao', 'autores', 'editores'));
+        $tipos = Tipo::all()->lists('nome', 'id');
+        
+        return View::make('publicacoes/editar', compact('titulo', 'publicacao', 'autores', 'editores', 'tipos'));
     }
     
     public function postEditar()
     {
+        $input = Input::all();
+
          // Edit element
         $publicacao = Publicacao::find(Input::get('id'));
             
         // Validation
         $validator = $publicacao->validate(Input::all());
-
+        
+        
         if ($validator->passes())
         {
             $publicacao->titulo = Input::get('titulo');
-            $publicacao->tipo = Input::get('tipo');
+            $publicacao->tipo_id = Input::get('tipo');
             $publicacao->alcance = Input::get('alcance');
             $publicacao->natureza = Input::get('natureza');
-
-            // Salva autores
-            if(isset($input['autor_idx']))
-            {
-                foreach ($input['autor_idx'] as $key => $value) {
-                    $autor = New Autor;
-                    $autor->nome = $input['autor'.$value];
-                    $autor->save();                    
-                }                
-            }
-            
-            // Salva editores
-            if(isset($input['editor_idx']))
-            {
-                foreach ($input['editor_idx'] as $key => $value) {
-                    $editor = New Editor;
-                    $editor->nome = $input['editor'.$value];
-                    $editor->save();                    
-                }                
-            }
 
             $publicacao->titulo_periodico = Input::get('titulo_periodico');
             $publicacao->editora = Input::get('editora');
@@ -188,6 +206,28 @@ class PublicacaoController extends BaseController{
             }
             
             $publicacao->save();
+            
+            // Salva autores
+            if(isset($input['autor_idx']))
+            {
+                foreach ($input['autor_idx'] as $key => $value) {
+                    $autor = New Autor;
+                    $autor->nome = $input['autor'.$value];
+                    $autor->publicacao_id = $publicacao->id;
+                    $autor->save();                    
+                }                
+            }
+            
+            // Salva editores
+            if(isset($input['editor_idx']))
+            {
+                foreach ($input['editor_idx'] as $key => $value) {
+                    $editor = New Editor;
+                    $editor->nome = $input['editor'.$value];
+                    $editor->publicacao_id = $publicacao->id;
+                    $editor->save();                    
+                }                
+            }
             
             return Redirect::to('/');
         }
@@ -233,16 +273,33 @@ class PublicacaoController extends BaseController{
 
             $pesquisa = Input::get('pesquisa');
 
+            $input = Input::all();
+            
             if($pesquisa)
             {
-                $publicacoes = Publicacao::search($pesquisa)->
-                        paginate(Config::get('additional.pagination_count', 10));
+                if(isset($input['ordem']))
+                {
+                    $publicacoes = Publicacao::search($pesquisa)->orderBy($input['campo'],$input['ordem'])->
+                            paginate(Config::get('additional.pagination_count', 10));
+                }
+                else
+                {
+                    $publicacoes = Publicacao::search($pesquisa)->
+                            paginate(Config::get('additional.pagination_count', 10));
+                }
             }
             else
             {
-                $publicacoes = Publicacao::paginate(Config::get('additional.pagination_count', 10));
+                if(isset($input['ordem']))
+                {
+                    $publicacoes = Publicacao::orderBy($input['campo'],$input['ordem'])->paginate(Config::get('additional.pagination_count', 10));
+                }
+                else
+                {
+                    $publicacoes = Publicacao::paginate(Config::get('additional.pagination_count', 10));
+                }
             }
-
+            
             return View::make('visitantes/lista', compact('titulo', 'publicacoes', 'pesquisa'));
     }
 }

@@ -4,7 +4,8 @@
 
 <h1>{{{ $titulo }}}</h1>
 <hr>
-        
+{{ Form::open(array('files'=>true, 'class'=>'form-horizontal', 'role'=> 'form')) }}
+
 <div class="form-group">
     <label for="nome" class="col-lg-2 control-label">Título</label>
     <div class="col-lg-4">
@@ -43,12 +44,27 @@
         }}
     </div>
 </div>
+
+<div class="form-group">
+    <label for="autores" class="col-lg-2 control-label">Autores</label>
+    <div class="col-lg-4">
+        @foreach($publicacao->autores()->get() as $autor)
+
+            {{ Form::text('autores', $autor->nome, array('class' => 'form-control', 'placeholder' => 'Nome do Editor', 'disabled')) }}
+    @endforeach
+    </div>
+</div>
+
 <div class="form-group">
     <label for="editores" class="col-lg-2 control-label">Editores</label>
     <div class="col-lg-4">
-        {{ Form::text('editores', $publicacao->editores, array('class' => 'form-control', 'placeholder' => 'Nome do Editor', 'disabled')) }}
+        @foreach($publicacao->editores()->get() as $editor)
+
+            {{ Form::text('editores', $editor->nome, array('class' => 'form-control', 'placeholder' => 'Nome do Editor', 'disabled')) }}
+    @endforeach
     </div>
 </div>
+
 <div class="form-group">
     <label for="titulo_periodico" class="col-lg-2 control-label">Título do Periódico</label>
     <div class="col-lg-4">
@@ -79,11 +95,13 @@
         {{ Form::text('ano', $publicacao->ano_publicacao, array('class' => 'form-control', 'placeholder' => 'Ano da Publicação', 'disabled')) }}
     </div>
 </div>
+@if($publicacao->url)
 <div class="form-group">
     <label for="pdf" class="col-lg-2 control-label">Arquivo Para Download</label>
     <div class="col-lg-4">
         <a type="button" class="btn btn-warning"  href="{{ $publicacao->url }}">Download da Publicação</a>
     </div>
 </div>
+@endif
 <hr>
 @stop
