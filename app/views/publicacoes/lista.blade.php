@@ -20,7 +20,11 @@
         @foreach($publicacoes as $publicacao)
         <tr>
             <td>{{  $publicacao->titulo }}</td>
-            <td>{{{ $publicacao->autores }}}</td>
+            <td>
+                @foreach($publicacao->autores as $autor)
+                    {{ $autor->nome }}&nbsp
+                @endforeach
+            </td>
             <td>{{{ $publicacao->editora }}}</td>
             <td>{{{ $publicacao->ano_publicacao }}}</td>
             <td>

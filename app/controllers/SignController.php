@@ -26,11 +26,6 @@ class SignController extends BaseController {
         if (Auth::attempt(array(
             'email' => Input::get('email'), 
             'password' => Input::get('password')
-            ), $remember) 
-            ||
-            Auth::attempt(array(
-                'username' => Input::get('email'), 
-                'password' => Input::get('password')
             ), $remember))
         {
             if(Input::get('redirect'))
@@ -53,6 +48,48 @@ class SignController extends BaseController {
         Auth::logout();
         
         return Redirect::to('sign/in');
+    }
+    
+        public function getCriar()
+    {
+        $titulo = 'Criar Usuário';
+
+        return View::make('sign/criar', compact('titulo'));
+    }
+
+    public function postCriar()
+    {
+        $input = Input::all();
+
+        $usuario = new User;
+
+        // Validação
+        $validacao = $usuario->validate(Input::all());
+
+        if ($validacao->passes())
+        {
+            $nomes_publicacao = explode(',',$input['nome_publicacao']);
+            $nomes_publicacao = json_encode($nomes_publicacao);
+
+            //Salva usuário
+            $usuario->nome = $input['nome'];
+            $usuario->email = $input['email'];
+            $usuario->password = Hash::make($input['password']);
+            $usuario->username = $input['username'];
+            $usuario->nome_publicacao = $nomes_publicacao;
+            $usuario->instituicao = $input['instituicao'];
+            $usuario->area = $input['area'];
+            $usuario->linha_pesquisa = $input['linha_pesquisa'];
+            
+            $usuario->save();
+
+            return Redirect::to('sign/in')->
+                    with('notification', 'Usuário Criado com sucesso!');
+        }
+
+        return Redirect::to('sign/criar/')->
+                withErrors($validacao)->
+                withInput();
     }
     /**
      * Exibe a view de recuperação de senha
@@ -132,46 +169,4 @@ class SignController extends BaseController {
 //                return Redirect::route('home');
 //        }
 //    }
-    
-    public function getCriar()
-    {
-        $titulo = 'Criar Usuário';
-
-        return View::make('sign/criar', compact('titulo'));
-    }
-
-    public function postCriar()
-    {
-        $input = Input::all();
-
-        $usuario = new User;
-
-        // Validação
-        $validacao = $usuario->validate(Input::all());
-
-        if ($validacao->passes())
-        {
-            $nomes_publicacao = explode(',',$input['nome_publicacao']);
-            $nomes_publicacao = json_encode($nomes_publicacao);
-
-            //Salva usuário
-            $usuario->nome = $input['nome'];
-            $usuario->email = $input['email'];
-            $usuario->password = Hash::make($input['password']);
-            $usuario->username = $input['username'];
-            $usuario->nome_publicacao = $nomes_publicacao;
-            $usuario->instituicao = $input['instituicao'];
-            $usuario->area = $input['area'];
-            $usuario->linha_pesquisa = $input['linha_pesquisa'];
-            
-            $usuario->save();
-
-            return Redirect::to('sign/in')->
-                    with('notification', 'Usuário Criado com sucesso!');
-        }
-
-        return Redirect::to('sign/criar/')->
-                withErrors($validacao)->
-                withInput();
-    }
 }

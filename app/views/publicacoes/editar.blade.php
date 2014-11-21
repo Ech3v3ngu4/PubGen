@@ -5,7 +5,7 @@
 <h1>{{{ $titulo }}}</h1>
 <hr>
 
-{{ Form::open(array('url' => 'publicacoes/editar', 'class'=>'form-horizontal', 'role'=> 'form')) }}
+{{ Form::open(array('url' => 'publicacoes/editar', 'files'=>true, 'class'=>'form-horizontal', 'role'=> 'form')) }}
     
     @include('templates.cruderrors')
     
@@ -14,12 +14,13 @@
         <div class="col-lg-4">
             {{ Form::text('titulo', $publicacao->titulo, array('class' => 'form-control', 'placeholder' => 'Título da Publicação')) }}
         </div>
-        <div class="form-group publicacao-autor">
+    </div>
+    <div class="form-group publicacao-autor">
             <label for="autores" class="col-lg-2 control-label">Autores</label>
             <div class="col-lg-4">
                 @if(isset($autores))
                     @foreach($autores as $key => $autor)
-                        @include('publicacao/autor', array('key' => $key, 'autor' => $autor))
+                        @include('publicacoes/autor', array('key' => $key, 'autor' => $autor))
                     @endforeach
                 @endif
 
@@ -33,7 +34,6 @@
                 </div>
             </div>
         </div>
-    </div>
     
     <div class="form-group">
         <label for="tipo" class="col-lg-2 control-label">Tipo da Publicação</label>
@@ -66,10 +66,23 @@
             }}
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group publicacao-editor">
         <label for="editores" class="col-lg-2 control-label">Editores</label>
         <div class="col-lg-4">
-            {{ Form::text('editores', $publicacao->editores, array('class' => 'form-control', 'placeholder' => 'Nome do Editor')) }}
+            @if(isset($editores))
+                @foreach($editores as $key => $editor)
+                    @include('publicacoes/editor', array('key' => $key, 'editor' => $editor))
+                @endforeach
+            @endif
+
+            <div class="row add-editor-wrap">
+                <div class="col-lg-4">
+                    <button type="button" title="editor" class="btn btn-primary add-editor">
+                        <span class="glyphicon glyphicon-plus"></span>
+                        Adicionar Editor
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
     <div class="form-group">
@@ -102,6 +115,20 @@
             {{ Form::text('ano', $publicacao->ano_publicacao, array('class' => 'form-control', 'placeholder' => 'Ano da Publicação')) }}
         </div>
     </div>
+    <div class="form-group">
+        <label for="pdf" class="col-lg-2 control-label">Upload de Publicação</label>
+        <div class="col-lg-4">
+            {{ Form::file('pdf','',array('class'=>'form-control')) }}
+        </div>
+    </div>
+    @if($publicacao->url)
+    <div class="form-group">
+        <label for="pdf" class="col-lg-2 control-label">Arquivo Para Download</label>
+        <div class="col-lg-4">
+            <a type="button" class="btn btn-warning"  href="{{ $publicacao->url }}">Download da Publicação</a>
+        </div>
+    </div>
+    @endif
     <hr>
     
     {{ Form::hidden('id', $publicacao->id) }}

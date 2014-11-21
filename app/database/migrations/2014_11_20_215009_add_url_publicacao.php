@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddRememberTokenUsuarios extends Migration {
+class AddUrlPublicacao extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,11 +12,12 @@ class AddRememberTokenUsuarios extends Migration {
 	 */
 	public function up()
 	{
-            Schema::table('usuarios', function($table)
+            Schema::table('publicacoes', function($table)
             {
-                $table->rememberToken();
+                $table->text('url');
             });
 	}
+
 	/**
 	 * Reverse the migrations.
 	 *
@@ -24,9 +25,9 @@ class AddRememberTokenUsuarios extends Migration {
 	 */
 	public function down()
 	{
-            Schema::table('usuarios', function($table)
+            Schema::table('publicacoes', function($table)
             {
-                $table->dropColumn('remember_token');
+                $table->dropColumn('url');
             });
 	}
 

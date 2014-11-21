@@ -16,4 +16,11 @@ class AjaxController extends BaseController{
         $autor = '';
         return View::make('publicacoes/autor', compact('key', 'autor'));
     }
+    
+    public function getEditor()
+    {   
+        $key = Input::get('key');
+        $editor = '';
+        return View::make('publicacoes/editor', compact('key', 'editor'));
+    }
 }

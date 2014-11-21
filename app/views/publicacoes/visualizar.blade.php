@@ -79,5 +79,11 @@
         {{ Form::text('ano', $publicacao->ano_publicacao, array('class' => 'form-control', 'placeholder' => 'Ano da Publicação', 'disabled')) }}
     </div>
 </div>
+<div class="form-group">
+    <label for="pdf" class="col-lg-2 control-label">Arquivo Para Download</label>
+    <div class="col-lg-4">
+        <a type="button" class="btn btn-warning"  href="{{ $publicacao->url }}">Download da Publicação</a>
+    </div>
+</div>
 <hr>
 @stop

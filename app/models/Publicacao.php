@@ -12,6 +12,16 @@ class Publicacao extends Eloquent {
         return $this->belongsTo('User');
     }
     
+    public function autores()
+    {
+        return $this->hasMany('Autor');
+    }
+    
+    public function editores()
+    {
+        return $this->hasMany('Editor');
+    }
+    
     // Validação
     public function validate($input) 
     {

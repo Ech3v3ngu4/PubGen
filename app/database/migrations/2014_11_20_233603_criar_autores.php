@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddRememberTokenUsuarios extends Migration {
+class CriarAutores extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,11 +12,14 @@ class AddRememberTokenUsuarios extends Migration {
 	 */
 	public function up()
 	{
-            Schema::table('usuarios', function($table)
+            Schema::create('autores', function($table)
             {
-                $table->rememberToken();
+                $table->increments('id');
+                $table->string('nome', 255);
+                $table->timestamps();
             });
 	}
+
 	/**
 	 * Reverse the migrations.
 	 *
@@ -24,10 +27,7 @@ class AddRememberTokenUsuarios extends Migration {
 	 */
 	public function down()
 	{
-            Schema::table('usuarios', function($table)
-            {
-                $table->dropColumn('remember_token');
-            });
+		Schema::drop('autores');
 	}
 
 }
